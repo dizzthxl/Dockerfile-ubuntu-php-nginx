@@ -18,6 +18,8 @@ COPY nginx/conf.d /etc/nginx/conf.d
 #项目
 COPY /project /opt
 
+RUN chmod -R 777 /opt
+
 WORKDIR /opt/
 
 #启动
