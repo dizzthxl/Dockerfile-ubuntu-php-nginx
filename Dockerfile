@@ -41,8 +41,9 @@ COPY nginx/conf.d /etc/nginx/conf.d
 
 
 #获取扩展目录文件名
-COPY fastdfs/ext/fastdfs_client.so /usr/lib/php/20160303/fastdfs_client.so
+COPY fastdfs/ext/fastdfs_client_${P_V}.so /usr/lib/php/20160303/fastdfs_client.so
 COPY fastdfs/ext/fastdfs_client.ini ${FASTDFS_PATH}/fastdfs/fastdfs_client.ini
+COPY php/php.ini  /etc/php/${P_V}/fpm/php.ini
 RUN cat ${FASTDFS_PATH}/fastdfs/fastdfs_client.ini >> /etc/php/${P_V}/fpm/php.ini
 
 #项目
@@ -55,6 +56,10 @@ COPY start.sh /usr/bin/start.sh
 
 #make the start.sh executable 
 RUN chmod 777 /usr/bin/start.sh
+
+#转码
+RUN apt-get install tofrodos
+RUN fromdos /usr/bin/start.sh
 
 #如不需要nginx，可去掉第二个参数
 ENTRYPOINT ["/usr/bin/start.sh"]
